@@ -11,48 +11,30 @@ def fetch(*arguments: list[str]):
     
     procedure = arguments[0]
     
-    if procedure == 'games':
-        return fetch_games(*arguments[1:])
+    procedures = {
+        'games': lambda: fetch_games(*arguments[1:])
+    }
+
+    procedures.get(procedure, lambda: print(f'Invalid procedure type \'{procedure}\''))()
     
-    if procedure == 'teams':
-        return fetch_teams()
-    
-    print(f'Invalid procedure type \'{procedure}\'')
-    
-def fetch_teams():
-    if not os.path.exists('data/stats'):
-        os.makedirs('data/stats')
-        
-    with open(f'data/stats/teams.json', 'w') as file:\
-        file.write(json.dumps(teams))
-        
-    print(f'Successfully saved teams as a raw json')
-    
-def fetch_games(*arguments: list[str]):
+def fetch_games(*arguments: list[str], timeout_seconds=7.5):
     if len(arguments) == 0:
         return print('No season type provided')
 
     season_type = arguments[0]
-    
-    if season_type == 'latest':
-        return fetch_latest_games()
-    
-    if season_type == 'all':
-        return fetch_all_games(5)
-        
-    if season_type == 'specific':
-        if len(arguments) == 1:
-            return print('No season provided')
-        
-        season = arguments[1]
-        return fetch_specific_games(season)
-    
-    print(f'Invalid season type \'{season_type}\'')
 
+    actions = {
+        'latest': lambda: fetch_latest_games(),
+        'all': lambda: fetch_all_games(timeout_seconds=timeout_seconds),
+        'specific': lambda: fetch_specific_games(arguments[1]) if len(arguments) > 1 else print('No season provided') 
+    }
+
+    actions.get(season_type, lambda: print(f'Invalid season type \'{season_type}\''))()
+    
 def fetch_latest_games():
     fetch_specific_games(current_season())
     
-def fetch_all_games(timeout_seconds: float):
+def fetch_all_games(timeout_seconds=7.5):
     end_year = current_year()
     
     for year in range(NBA_START_YEAR, end_year):

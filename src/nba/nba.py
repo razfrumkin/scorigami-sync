@@ -1,4 +1,5 @@
 from .fetch import fetch
+from .sync import sync
 
 def execute(*arguments: list[str]):
     if len(arguments) == 0:
@@ -8,8 +9,7 @@ def execute(*arguments: list[str]):
 
     actions = {
         'fetch': lambda: fetch(*arguments[1:]),
-        # 'sync': lambda: sync(*arguments[1:]),
-        # 'setup': lambda: setup()
+        'sync': lambda: sync(*arguments[1:])
     }
 
-    return actions.get(command, lambda: print(f'Invalid command \'${command}\''))()
+    actions.get(command, lambda: print(f'Invalid command \'${command}\''))()
