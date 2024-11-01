@@ -14,10 +14,10 @@ def current_year() -> int:
 def current_season() -> str:
     return year_to_season(current_year() - 1)
 
-def parse_date(date_str) -> datetime:
+def parse_date(date: str) -> datetime:
     try:
-        return datetime.strptime(date_str, '%Y-%m-%d')
+        return datetime.strptime(date, '%Y-%m-%d')
     except ValueError:
-        return datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
+        return datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
 
 NBA_START_YEAR = 1946
