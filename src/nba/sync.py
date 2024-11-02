@@ -1,6 +1,6 @@
 import json
 import requests
-from .utilities import current_season, current_year, NBA_START_YEAR, year_to_season, parse_date, season_to_year
+from .utilities import current_season, current_season_year, NBA_START_YEAR, year_to_season, parse_date, season_to_year
 from .game import Game
 from .team_game_stats import TeamGameStats
 
@@ -41,10 +41,10 @@ def sync_games(base_url: str, password: str, *arguments: list[str]):
     actions.get(season_type, lambda: print(f'Invalid season type \'{season_type}\''))()
 
 def sync_latest_games(base_url: str, password: str):
-    sync_specific_games(base_url, password, current_season())
+    sync_specific_games(base_url, password, current_season)
 
 def sync_all_games(base_url: str, password: str):
-    end_year = current_year()
+    end_year = current_season_year
 
     for year in range(NBA_START_YEAR, end_year):
         season = year_to_season(year)
