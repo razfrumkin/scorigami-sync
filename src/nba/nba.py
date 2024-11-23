@@ -12,4 +12,4 @@ def execute(*arguments: list[str]):
         'sync': lambda: sync(*arguments[1:])
     }
 
-    actions.get(command, lambda: print(f'Invalid command \'${command}\''))()
+    actions.get(command, lambda: print(f'Invalid command \'{command}\''))()
